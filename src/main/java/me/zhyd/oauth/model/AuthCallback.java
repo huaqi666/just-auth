@@ -1,7 +1,12 @@
 package me.zhyd.oauth.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 /**
  * 授权回调时的参数类
@@ -11,7 +16,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AuthCallback {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AuthCallback implements Serializable {
 
     /**
      * 访问AuthorizeUrl后回调时带的参数code
@@ -34,4 +42,19 @@ public class AuthCallback {
      * @since 1.10.0
      */
     private String authorization_code;
+
+    /**
+     * Twitter回调后返回的oauth_token
+     *
+     * @since 1.13.0
+     */
+    private String oauth_token;
+
+    /**
+     * Twitter回调后返回的oauth_verifier
+     *
+     * @since 1.13.0
+     */
+    private String oauth_verifier;
+
 }

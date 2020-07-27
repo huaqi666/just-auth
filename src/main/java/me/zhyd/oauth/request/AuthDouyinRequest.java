@@ -1,11 +1,10 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
@@ -25,11 +24,11 @@ import me.zhyd.oauth.utils.UrlBuilder;
 public class AuthDouyinRequest extends AuthDefaultRequest {
 
     public AuthDouyinRequest(AuthConfig config) {
-        super(config, AuthSource.DOUYIN);
+        super(config, AuthDefaultSource.DOUYIN);
     }
 
     public AuthDouyinRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.DOUYIN, authStateCache);
+        super(config, AuthDefaultSource.DOUYIN, authStateCache);
     }
 
     @Override
@@ -39,18 +38,21 @@ public class AuthDouyinRequest extends AuthDefaultRequest {
 
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
-        HttpResponse response = doGetUserInfo(authToken);
-        JSONObject userInfoObject = JSONObject.parseObject(response.body());
+        String response = doGetUserInfo(authToken);
+        JSONObject userInfoObject = JSONObject.parseObject(response);
         this.checkResponse(userInfoObject);
+        JSONObject object = userInfoObject.getJSONObject("data");
         return AuthUser.builder()
-            .uuid(userInfoObject.getString("union_id"))
-            .username(userInfoObject.getString("nickname"))
-            .nickname(userInfoObject.getString("nickname"))
-            .avatar(userInfoObject.getString("avatar"))
-            .remark(userInfoObject.getString("description"))
-            .gender(AuthUserGender.UNKNOWN)
+            .rawUserInfo(object)
+            .uuid(object.getString("union_id"))
+            .username(object.getString("nickname"))
+            .nickname(object.getString("nickname"))
+            .avatar(object.getString("avatar"))
+            .remark(object.getString("description"))
+            .gender(AuthUserGender.getRealGender(object.getString("gender")))
+            .location(String.format("%s %s %s", object.getString("country"), object.getString("province"), object.getString("city")))
             .token(authToken)
-            .source(source)
+            .source(source.toString())
             .build();
     }
 
@@ -83,16 +85,16 @@ public class AuthDouyinRequest extends AuthDefaultRequest {
      * @return token对象
      */
     private AuthToken getToken(String accessTokenUrl) {
-        HttpResponse response = HttpRequest.post(accessTokenUrl).execute();
-        String accessTokenStr = response.body();
-        JSONObject object = JSONObject.parseObject(accessTokenStr);
+        String response = new HttpUtils(config.getHttpConfig()).post(accessTokenUrl);
+        JSONObject object = JSONObject.parseObject(response);
         this.checkResponse(object);
+        JSONObject dataObj = object.getJSONObject("data");
         return AuthToken.builder()
-            .accessToken(object.getString("access_token"))
-            .openId(object.getString("open_id"))
-            .expireIn(object.getIntValue("expires_in"))
-            .refreshToken(object.getString("refresh_token"))
-            .scope(object.getString("scope"))
+            .accessToken(dataObj.getString("access_token"))
+            .openId(dataObj.getString("open_id"))
+            .expireIn(dataObj.getIntValue("expires_in"))
+            .refreshToken(dataObj.getString("refresh_token"))
+            .scope(dataObj.getString("scope"))
             .build();
     }
 

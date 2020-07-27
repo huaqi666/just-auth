@@ -1,11 +1,11 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
+import com.xkcoding.http.support.HttpHeader;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
@@ -22,17 +22,17 @@ import me.zhyd.oauth.utils.UrlBuilder;
 public class AuthGoogleRequest extends AuthDefaultRequest {
 
     public AuthGoogleRequest(AuthConfig config) {
-        super(config, AuthSource.GOOGLE);
+        super(config, AuthDefaultSource.GOOGLE);
     }
 
     public AuthGoogleRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.GOOGLE, authStateCache);
+        super(config, AuthDefaultSource.GOOGLE, authStateCache);
     }
 
     @Override
     protected AuthToken getAccessToken(AuthCallback authCallback) {
-        HttpResponse response = doPostAuthorizationCode(authCallback.getCode());
-        JSONObject accessTokenObject = JSONObject.parseObject(response.body());
+        String response = doPostAuthorizationCode(authCallback.getCode());
+        JSONObject accessTokenObject = JSONObject.parseObject(response);
         this.checkResponse(accessTokenObject);
         return AuthToken.builder()
             .accessToken(accessTokenObject.getString("access_token"))
@@ -45,13 +45,13 @@ public class AuthGoogleRequest extends AuthDefaultRequest {
 
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
-        HttpResponse response = HttpRequest.post(userInfoUrl(authToken))
-            .header("Authorization", "Bearer " + authToken.getAccessToken())
-            .execute();
-        String userInfo = response.body();
+        HttpHeader httpHeader = new HttpHeader();
+        httpHeader.add("Authorization", "Bearer " + authToken.getAccessToken());
+        String userInfo = new HttpUtils(config.getHttpConfig()).post(userInfoUrl(authToken), null, httpHeader);
         JSONObject object = JSONObject.parseObject(userInfo);
         this.checkResponse(object);
         return AuthUser.builder()
+            .rawUserInfo(object)
             .uuid(object.getString("sub"))
             .username(object.getString("email"))
             .avatar(object.getString("picture"))
@@ -60,7 +60,7 @@ public class AuthGoogleRequest extends AuthDefaultRequest {
             .email(object.getString("email"))
             .gender(AuthUserGender.UNKNOWN)
             .token(authToken)
-            .source(source)
+            .source(source.toString())
             .build();
     }
 

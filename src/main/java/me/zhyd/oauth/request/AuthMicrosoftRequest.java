@@ -1,11 +1,13 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
+import com.xkcoding.http.constants.Constants;
+import com.xkcoding.http.support.HttpHeader;
+import com.xkcoding.http.util.MapUtil;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
@@ -15,7 +17,7 @@ import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.utils.UrlBuilder;
 
-import static me.zhyd.oauth.utils.GlobalAuthUtil.parseQueryToMap;
+import java.util.Map;
 
 /**
  * 微软登录
@@ -25,11 +27,11 @@ import static me.zhyd.oauth.utils.GlobalAuthUtil.parseQueryToMap;
  */
 public class AuthMicrosoftRequest extends AuthDefaultRequest {
     public AuthMicrosoftRequest(AuthConfig config) {
-        super(config, AuthSource.MICROSOFT);
+        super(config, AuthDefaultSource.MICROSOFT);
     }
 
     public AuthMicrosoftRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.MICROSOFT, authStateCache);
+        super(config, AuthDefaultSource.MICROSOFT, authStateCache);
     }
 
     @Override
@@ -44,13 +46,12 @@ public class AuthMicrosoftRequest extends AuthDefaultRequest {
      * @return token对象
      */
     private AuthToken getToken(String accessTokenUrl) {
-        HttpResponse response = HttpRequest.post(accessTokenUrl)
-            .header("Host", "https://login.microsoftonline.com")
-            .contentType("application/x-www-form-urlencoded")
-            .form(parseQueryToMap(accessTokenUrl))
-            .execute();
-        String accessTokenStr = response.body();
-        JSONObject accessTokenObject = JSONObject.parseObject(accessTokenStr);
+        HttpHeader httpHeader = new HttpHeader();
+
+        Map<String, String> form = MapUtil.parseStringToMap(accessTokenUrl, false);
+
+        String response = new HttpUtils(config.getHttpConfig()).post(accessTokenUrl, form, httpHeader, false);
+        JSONObject accessTokenObject = JSONObject.parseObject(response);
 
         this.checkResponse(accessTokenObject);
 
@@ -79,11 +80,15 @@ public class AuthMicrosoftRequest extends AuthDefaultRequest {
         String token = authToken.getAccessToken();
         String tokenType = authToken.getTokenType();
         String jwt = tokenType + " " + token;
-        HttpResponse response = HttpRequest.get(userInfoUrl(authToken)).header("Authorization", jwt).execute();
-        String userInfo = response.body();
+
+        HttpHeader httpHeader = new HttpHeader();
+        httpHeader.add("Authorization", jwt);
+
+        String userInfo = new HttpUtils(config.getHttpConfig()).get(userInfoUrl(authToken), null, httpHeader, false);
         JSONObject object = JSONObject.parseObject(userInfo);
         this.checkResponse(object);
         return AuthUser.builder()
+            .rawUserInfo(object)
             .uuid(object.getString("id"))
             .username(object.getString("userPrincipalName"))
             .nickname(object.getString("displayName"))
@@ -91,7 +96,7 @@ public class AuthMicrosoftRequest extends AuthDefaultRequest {
             .email(object.getString("mail"))
             .gender(AuthUserGender.UNKNOWN)
             .token(authToken)
-            .source(source)
+            .source(source.toString())
             .build();
     }
 
@@ -123,7 +128,7 @@ public class AuthMicrosoftRequest extends AuthDefaultRequest {
             .queryParam("client_id", config.getClientId())
             .queryParam("redirect_uri", config.getRedirectUri())
             .queryParam("response_mode", "query")
-            .queryParam("scope", "offline_access%20user.read%20mail.read")
+            .queryParam("scope", "offline_access user.read mail.read")
             .queryParam("state", getRealState(state))
             .build();
     }
@@ -141,7 +146,7 @@ public class AuthMicrosoftRequest extends AuthDefaultRequest {
             .queryParam("client_id", config.getClientId())
             .queryParam("client_secret", config.getClientSecret())
             .queryParam("grant_type", "authorization_code")
-            .queryParam("scope", "user.read%20mail.read")
+            .queryParam("scope", "offline_access user.read mail.read")
             .queryParam("redirect_uri", config.getRedirectUri())
             .build();
     }

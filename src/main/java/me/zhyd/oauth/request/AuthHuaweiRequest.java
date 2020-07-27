@@ -1,11 +1,10 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
@@ -13,6 +12,9 @@ import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.utils.UrlBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static me.zhyd.oauth.enums.AuthResponseStatus.SUCCESS;
 
@@ -26,11 +28,11 @@ import static me.zhyd.oauth.enums.AuthResponseStatus.SUCCESS;
 public class AuthHuaweiRequest extends AuthDefaultRequest {
 
     public AuthHuaweiRequest(AuthConfig config) {
-        super(config, AuthSource.HUAWEI);
+        super(config, AuthDefaultSource.HUAWEI);
     }
 
     public AuthHuaweiRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.HUAWEI, authStateCache);
+        super(config, AuthDefaultSource.HUAWEI, authStateCache);
     }
 
     /**
@@ -43,13 +45,15 @@ public class AuthHuaweiRequest extends AuthDefaultRequest {
      */
     @Override
     protected AuthToken getAccessToken(AuthCallback authCallback) {
-        HttpRequest request = HttpRequest.post(source.accessToken())
-            .form("grant_type", "authorization_code")
-            .form("code", authCallback.getAuthorization_code())
-            .form("client_id", config.getClientId())
-            .form("client_secret", config.getClientSecret())
-            .form("redirect_uri", config.getRedirectUri());
-        return getAuthToken(request);
+        Map<String, String> form = new HashMap<>(5);
+        form.put("grant_type", "authorization_code");
+        form.put("code", authCallback.getAuthorization_code());
+        form.put("client_id", config.getClientId());
+        form.put("client_secret", config.getClientSecret());
+        form.put("redirect_uri", config.getRedirectUri());
+
+        String response = new HttpUtils(config.getHttpConfig()).post(source.accessToken(), form, false);
+        return getAuthToken(response);
     }
 
     /**
@@ -61,26 +65,28 @@ public class AuthHuaweiRequest extends AuthDefaultRequest {
      */
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
-        HttpResponse response = HttpRequest.post(source.userInfo())
-            .form("nsp_ts", System.currentTimeMillis())
-            .form("access_token", authToken.getAccessToken())
-            .form("nsp_fmt", "JS")
-            .form("nsp_svc", "OpenUP.User.getInfo")
-            .execute();
-        JSONObject object = JSONObject.parseObject(response.body());
+        Map<String, String> form = new HashMap<>(4);
+        form.put("nsp_ts", System.currentTimeMillis() + "");
+        form.put("access_token", authToken.getAccessToken());
+        form.put("nsp_fmt", "JS");
+        form.put("nsp_svc", "OpenUP.User.getInfo");
+
+        String response = new HttpUtils(config.getHttpConfig()).post(source.userInfo(), form, false);
+        JSONObject object = JSONObject.parseObject(response);
 
         this.checkResponse(object);
 
         AuthUserGender gender = getRealGender(object);
 
         return AuthUser.builder()
+            .rawUserInfo(object)
             .uuid(object.getString("userID"))
             .username(object.getString("userName"))
             .nickname(object.getString("userName"))
             .gender(gender)
             .avatar(object.getString("headPictureURL"))
             .token(authToken)
-            .source(source)
+            .source(source.toString())
             .build();
     }
 
@@ -92,20 +98,18 @@ public class AuthHuaweiRequest extends AuthDefaultRequest {
      */
     @Override
     public AuthResponse refresh(AuthToken authToken) {
-        HttpRequest request = HttpRequest.post(source.refresh())
-            .form("client_id", config.getClientId())
-            .form("client_secret", config.getClientSecret())
-            .form("refresh_token", authToken.getRefreshToken())
-            .form("grant_type", "refresh_token");
-        return AuthResponse.builder()
-            .code(SUCCESS.getCode())
-            .data(getAuthToken(request))
-            .build();
+        Map<String, String> form = new HashMap<>(4);
+        form.put("client_id", config.getClientId());
+        form.put("client_secret", config.getClientSecret());
+        form.put("refresh_token", authToken.getRefreshToken());
+        form.put("grant_type", "refresh_token");
+
+        String response = new HttpUtils(config.getHttpConfig()).post(source.refresh(), form, false);
+        return AuthResponse.builder().code(SUCCESS.getCode()).data(getAuthToken(response)).build();
     }
 
-    private AuthToken getAuthToken(HttpRequest request) {
-        HttpResponse response = request.execute();
-        JSONObject object = JSONObject.parseObject(response.body());
+    private AuthToken getAuthToken(String response) {
+        JSONObject object = JSONObject.parseObject(response);
 
         this.checkResponse(object);
 

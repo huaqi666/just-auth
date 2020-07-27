@@ -1,18 +1,17 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
-import me.zhyd.oauth.utils.GlobalAuthUtil;
+import me.zhyd.oauth.utils.GlobalAuthUtils;
 import me.zhyd.oauth.utils.UrlBuilder;
 
 /**
@@ -24,11 +23,11 @@ import me.zhyd.oauth.utils.UrlBuilder;
 public class AuthDingTalkRequest extends AuthDefaultRequest {
 
     public AuthDingTalkRequest(AuthConfig config) {
-        super(config, AuthSource.DINGTALK);
+        super(config, AuthDefaultSource.DINGTALK);
     }
 
     public AuthDingTalkRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.DINGTALK, authStateCache);
+        super(config, AuthDefaultSource.DINGTALK, authStateCache);
     }
 
     @Override
@@ -41,8 +40,8 @@ public class AuthDingTalkRequest extends AuthDefaultRequest {
         String code = authToken.getAccessCode();
         JSONObject param = new JSONObject();
         param.put("tmp_auth_code", code);
-        HttpResponse response = HttpRequest.post(userInfoUrl(authToken)).body(param.toJSONString()).execute();
-        JSONObject object = JSON.parseObject(response.body());
+        String response = new HttpUtils(config.getHttpConfig()).post(userInfoUrl(authToken), param.toJSONString());
+        JSONObject object = JSON.parseObject(response);
         if (object.getIntValue("errcode") != 0) {
             throw new AuthException(object.getString("errmsg"));
         }
@@ -52,11 +51,12 @@ public class AuthDingTalkRequest extends AuthDefaultRequest {
             .unionId(object.getString("unionid"))
             .build();
         return AuthUser.builder()
+            .rawUserInfo(object)
             .uuid(object.getString("unionid"))
             .nickname(object.getString("nick"))
             .username(object.getString("nick"))
             .gender(AuthUserGender.UNKNOWN)
-            .source(source)
+            .source(source.toString())
             .token(token)
             .build();
     }
@@ -89,7 +89,7 @@ public class AuthDingTalkRequest extends AuthDefaultRequest {
     protected String userInfoUrl(AuthToken authToken) {
         // 根据timestamp, appSecret计算签名值
         String timestamp = System.currentTimeMillis() + "";
-        String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(config.getClientSecret(), timestamp);
+        String urlEncodeSignature = GlobalAuthUtils.generateDingTalkSignature(config.getClientSecret(), timestamp);
 
         return UrlBuilder.fromBaseUrl(source.userInfo())
             .queryParam("signature", urlEncodeSignature)

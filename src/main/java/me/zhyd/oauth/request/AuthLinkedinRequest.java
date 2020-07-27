@@ -1,13 +1,13 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import com.xkcoding.http.constants.Constants;
+import com.xkcoding.http.support.HttpHeader;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
@@ -15,6 +15,7 @@ import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.utils.StringUtils;
 import me.zhyd.oauth.utils.UrlBuilder;
 
@@ -28,11 +29,11 @@ import me.zhyd.oauth.utils.UrlBuilder;
 public class AuthLinkedinRequest extends AuthDefaultRequest {
 
     public AuthLinkedinRequest(AuthConfig config) {
-        super(config, AuthSource.LINKEDIN);
+        super(config, AuthDefaultSource.LINKEDIN);
     }
 
     public AuthLinkedinRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.LINKEDIN, authStateCache);
+        super(config, AuthDefaultSource.LINKEDIN, authStateCache);
     }
 
     @Override
@@ -43,12 +44,13 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
         String accessToken = authToken.getAccessToken();
-        HttpResponse response = HttpRequest.get(userInfoUrl(authToken))
-            .header("Host", "api.linkedin.com")
-            .header("Connection", "Keep-Alive")
-            .header("Authorization", "Bearer " + accessToken)
-            .execute();
-        JSONObject userInfoObject = JSONObject.parseObject(response.body());
+        HttpHeader httpHeader = new HttpHeader();
+        httpHeader.add("Host", "api.linkedin.com");
+        httpHeader.add("Connection", "Keep-Alive");
+        httpHeader.add("Authorization", "Bearer " + accessToken);
+
+        String response = new HttpUtils(config.getHttpConfig()).get(userInfoUrl(authToken), null, httpHeader, false);
+        JSONObject userInfoObject = JSONObject.parseObject(response);
 
         this.checkResponse(userInfoObject);
 
@@ -60,6 +62,7 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
         // 获取用户邮箱地址
         String email = this.getUserEmail(accessToken);
         return AuthUser.builder()
+            .rawUserInfo(userInfoObject)
             .uuid(userInfoObject.getString("id"))
             .username(userName)
             .nickname(userName)
@@ -67,7 +70,7 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
             .email(email)
             .token(authToken)
             .gender(AuthUserGender.UNKNOWN)
-            .source(AuthSource.LINKEDIN)
+            .source(source.toString())
             .build();
     }
 
@@ -101,17 +104,27 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
      * @return 用户的头像地址
      */
     private String getAvatar(JSONObject userInfoObject) {
-        String avatar = null;
         JSONObject profilePictureObject = userInfoObject.getJSONObject("profilePicture");
-        if (profilePictureObject.containsKey("displayImage~")) {
-            JSONArray displayImageElements = profilePictureObject.getJSONObject("displayImage~")
-                .getJSONArray("elements");
-            if (null != displayImageElements && displayImageElements.size() > 0) {
-                JSONObject largestImageObj = displayImageElements.getJSONObject(displayImageElements.size() - 1);
-                avatar = largestImageObj.getJSONArray("identifiers").getJSONObject(0).getString("identifier");
-            }
+        if (null == profilePictureObject || !profilePictureObject.containsKey("displayImage~")) {
+            return null;
         }
-        return avatar;
+        JSONObject displayImageObject = profilePictureObject.getJSONObject("displayImage~");
+        if (null == displayImageObject || !displayImageObject.containsKey("elements")) {
+            return null;
+        }
+        JSONArray displayImageElements = displayImageObject.getJSONArray("elements");
+        if (null == displayImageElements || displayImageElements.isEmpty()) {
+            return null;
+        }
+        JSONObject largestImageObj = displayImageElements.getJSONObject(displayImageElements.size() - 1);
+        if (null == largestImageObj || !largestImageObj.containsKey("identifiers")) {
+            return null;
+        }
+        JSONArray identifiers = largestImageObj.getJSONArray("identifiers");
+        if (null == identifiers || identifiers.isEmpty()) {
+            return null;
+        }
+        return identifiers.getJSONObject(0).getString("identifier");
     }
 
     /**
@@ -121,13 +134,16 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
      * @return 用户的邮箱地址
      */
     private String getUserEmail(String accessToken) {
-        HttpResponse emailResponse = HttpRequest.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))")
-            .header("Host", "api.linkedin.com")
-            .header("Connection", "Keep-Alive")
-            .header("Authorization", "Bearer " + accessToken)
-            .execute();
-        JSONObject emailObj = JSONObject.parseObject(emailResponse.body());
+        HttpHeader httpHeader = new HttpHeader();
+        httpHeader.add("Host", "api.linkedin.com");
+        httpHeader.add("Connection", "Keep-Alive");
+        httpHeader.add("Authorization", "Bearer " + accessToken);
+
+        String emailResponse = new HttpUtils(config.getHttpConfig()).get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))", null, httpHeader, false);
+        JSONObject emailObj = JSONObject.parseObject(emailResponse);
+
         this.checkResponse(emailObj);
+
         Object obj = JSONPath.eval(emailObj, "$['elements'][0]['handle~']['emailAddress']");
         return null == obj ? null : (String) obj;
     }
@@ -141,19 +157,6 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
         return firstName;
     }
 
-    @Override
-    public AuthResponse refresh(AuthToken oldToken) {
-        String refreshToken = oldToken.getRefreshToken();
-        if (StringUtils.isEmpty(refreshToken)) {
-            throw new AuthException(AuthResponseStatus.UNSUPPORTED);
-        }
-        String refreshTokenUrl = refreshTokenUrl(refreshToken);
-        return AuthResponse.builder()
-            .code(AuthResponseStatus.SUCCESS.getCode())
-            .data(this.getToken(refreshTokenUrl))
-            .build();
-    }
-
     /**
      * 检查响应内容是否正确
      *
@@ -161,7 +164,7 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
      */
     private void checkResponse(JSONObject object) {
         if (object.containsKey("error")) {
-            throw new AuthException(object.getString("error_description"));
+            throw new AuthException(object.getString("error_description"), source);
         }
     }
 
@@ -172,12 +175,12 @@ public class AuthLinkedinRequest extends AuthDefaultRequest {
      * @return token对象
      */
     private AuthToken getToken(String accessTokenUrl) {
-        HttpResponse response = HttpRequest.post(accessTokenUrl)
-            .header("Host", "www.linkedin.com")
-            .contentType("application/x-www-form-urlencoded")
-            .execute();
-        String accessTokenStr = response.body();
-        JSONObject accessTokenObject = JSONObject.parseObject(accessTokenStr);
+        HttpHeader httpHeader = new HttpHeader();
+        httpHeader.add("Host", "www.linkedin.com");
+        httpHeader.add(Constants.CONTENT_TYPE, "application/x-www-form-urlencoded");
+
+        String response = new HttpUtils(config.getHttpConfig()).post(accessTokenUrl, null, httpHeader);
+        JSONObject accessTokenObject = JSONObject.parseObject(response);
 
         this.checkResponse(accessTokenObject);
 

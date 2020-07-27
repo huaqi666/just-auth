@@ -1,11 +1,10 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
@@ -14,6 +13,9 @@ import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.utils.UrlBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 美团登录
@@ -24,22 +26,23 @@ import me.zhyd.oauth.utils.UrlBuilder;
 public class AuthMeituanRequest extends AuthDefaultRequest {
 
     public AuthMeituanRequest(AuthConfig config) {
-        super(config, AuthSource.MEITUAN);
+        super(config, AuthDefaultSource.MEITUAN);
     }
 
     public AuthMeituanRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.MEITUAN, authStateCache);
+        super(config, AuthDefaultSource.MEITUAN, authStateCache);
     }
 
     @Override
     protected AuthToken getAccessToken(AuthCallback authCallback) {
-        HttpResponse response = HttpRequest.post(source.accessToken())
-            .form("app_id", config.getClientId())
-            .form("secret", config.getClientSecret())
-            .form("code", authCallback.getCode())
-            .form("grant_type", "authorization_code")
-            .execute();
-        JSONObject object = JSONObject.parseObject(response.body());
+        Map<String, String> form = new HashMap<>(4);
+        form.put("app_id", config.getClientId());
+        form.put("secret", config.getClientSecret());
+        form.put("code", authCallback.getCode());
+        form.put("grant_type", "authorization_code");
+
+        String response = new HttpUtils(config.getHttpConfig()).post(source.accessToken(), form, false);
+        JSONObject object = JSONObject.parseObject(response);
 
         this.checkResponse(object);
 
@@ -52,35 +55,38 @@ public class AuthMeituanRequest extends AuthDefaultRequest {
 
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
-        HttpResponse response = HttpRequest.post(source.userInfo())
-            .form("app_id", config.getClientId())
-            .form("secret", config.getClientSecret())
-            .form("access_token", authToken.getAccessToken())
-            .execute();
-        JSONObject object = JSONObject.parseObject(response.body());
+        Map<String, String> form = new HashMap<>(3);
+        form.put("app_id", config.getClientId());
+        form.put("secret", config.getClientSecret());
+        form.put("access_token", authToken.getAccessToken());
+
+        String response = new HttpUtils(config.getHttpConfig()).post(source.userInfo(), form, false);
+        JSONObject object = JSONObject.parseObject(response);
 
         this.checkResponse(object);
 
         return AuthUser.builder()
+            .rawUserInfo(object)
             .uuid(object.getString("openid"))
             .username(object.getString("nickname"))
             .nickname(object.getString("nickname"))
             .avatar(object.getString("avatar"))
             .gender(AuthUserGender.UNKNOWN)
             .token(authToken)
-            .source(source)
+            .source(source.toString())
             .build();
     }
 
     @Override
     public AuthResponse refresh(AuthToken oldToken) {
-        HttpResponse response = HttpRequest.post(source.accessToken())
-            .form("app_id", config.getClientId())
-            .form("secret", config.getClientSecret())
-            .form("refresh_token", oldToken.getRefreshToken())
-            .form("grant_type", "authorization_code")
-            .execute();
-        JSONObject object = JSONObject.parseObject(response.body());
+        Map<String, String> form = new HashMap<>(4);
+        form.put("app_id", config.getClientId());
+        form.put("secret", config.getClientSecret());
+        form.put("refresh_token", oldToken.getRefreshToken());
+        form.put("grant_type", "refresh_token");
+
+        String response = new HttpUtils(config.getHttpConfig()).post(source.refresh(), form, false);
+        JSONObject object = JSONObject.parseObject(response);
 
         this.checkResponse(object);
 

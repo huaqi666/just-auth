@@ -1,11 +1,10 @@
 package me.zhyd.oauth.request;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSONObject;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthSource;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
@@ -25,34 +24,41 @@ import me.zhyd.oauth.utils.UrlBuilder;
 public class AuthBaiduRequest extends AuthDefaultRequest {
 
     public AuthBaiduRequest(AuthConfig config) {
-        super(config, AuthSource.BAIDU);
+        super(config, AuthDefaultSource.BAIDU);
     }
 
     public AuthBaiduRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthSource.BAIDU, authStateCache);
+        super(config, AuthDefaultSource.BAIDU, authStateCache);
     }
 
     @Override
     protected AuthToken getAccessToken(AuthCallback authCallback) {
-        HttpResponse response = doPostAuthorizationCode(authCallback.getCode());
+        String response = doPostAuthorizationCode(authCallback.getCode());
         return getAuthToken(response);
     }
 
+    /**
+     * https://openapi.baidu.com/rest/2.0/passport/users/getInfo?access_token=121.c86e87cc0828cc1dabb8faee540531d4.YsUIAWvYbgqVni1VhkgKgyLh8nEyELbDOEZs_OA.OgDgmA
+     * https://openapi.baidu.com/rest/2.0/passport/users/getInfo?access_token=121.2907d9facf9fb97adf7287fa75496eda.Y3NSjR3-3HKt1RgT0HEl7GgxRXT5gOOVdngXezY.OcC_7g
+     * 新旧应用返回的用户信息不一致
+     * @param authToken token信息
+     * @return AuthUser
+     */
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
-        HttpResponse response = doGetUserInfo(authToken);
-        String userInfo = response.body();
+        String userInfo = doGetUserInfo(authToken);
         JSONObject object = JSONObject.parseObject(userInfo);
         this.checkResponse(object);
         return AuthUser.builder()
-            .uuid(object.getString("userid"))
+            .rawUserInfo(object)
+            .uuid(object.containsKey("userid") ? object.getString("userid") : object.getString("openid"))
             .username(object.getString("username"))
             .nickname(object.getString("username"))
             .avatar(getAvatar(object))
             .remark(object.getString("userdetail"))
             .gender(AuthUserGender.getRealGender(object.getString("sex")))
             .token(authToken)
-            .source(source)
+            .source(source.toString())
             .build();
     }
 
@@ -63,8 +69,8 @@ public class AuthBaiduRequest extends AuthDefaultRequest {
 
     @Override
     public AuthResponse revoke(AuthToken authToken) {
-        HttpResponse response = doGetRevoke(authToken);
-        JSONObject object = JSONObject.parseObject(response.body());
+        String response = doGetRevoke(authToken);
+        JSONObject object = JSONObject.parseObject(response);
         this.checkResponse(object);
         // 返回1表示取消授权成功，否则失败
         AuthResponseStatus status = object.getIntValue("result") == 1 ? AuthResponseStatus.SUCCESS : AuthResponseStatus.FAILURE;
@@ -79,7 +85,7 @@ public class AuthBaiduRequest extends AuthDefaultRequest {
             .queryParam("client_id", this.config.getClientId())
             .queryParam("client_secret", this.config.getClientSecret())
             .build();
-        HttpResponse response = HttpRequest.get(refreshUrl).execute();
+        String response = new HttpUtils(config.getHttpConfig()).get(refreshUrl);
         return AuthResponse.builder()
             .code(AuthResponseStatus.SUCCESS.getCode())
             .data(this.getAuthToken(response))
@@ -116,8 +122,8 @@ public class AuthBaiduRequest extends AuthDefaultRequest {
         }
     }
 
-    private AuthToken getAuthToken(HttpResponse response) {
-        JSONObject accessTokenObject = JSONObject.parseObject(response.body());
+    private AuthToken getAuthToken(String response) {
+        JSONObject accessTokenObject = JSONObject.parseObject(response);
         this.checkResponse(accessTokenObject);
         return AuthToken.builder()
             .accessToken(accessTokenObject.getString("access_token"))
