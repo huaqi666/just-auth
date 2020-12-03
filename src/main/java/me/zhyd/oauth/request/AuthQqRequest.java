@@ -1,20 +1,18 @@
 package me.zhyd.oauth.request;
 
 import com.alibaba.fastjson.JSONObject;
-import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
+import me.zhyd.oauth.enums.scope.AuthQqScope;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
-import me.zhyd.oauth.utils.GlobalAuthUtils;
-import me.zhyd.oauth.utils.StringUtils;
-import me.zhyd.oauth.utils.UrlBuilder;
+import me.zhyd.oauth.utils.*;
 
 import java.util.Map;
 
@@ -121,8 +119,15 @@ public class AuthQqRequest extends AuthDefaultRequest {
         }
         return AuthToken.builder()
             .accessToken(accessTokenObject.get("access_token"))
-            .expireIn(Integer.valueOf(accessTokenObject.get("expires_in")))
+            .expireIn(Integer.parseInt(accessTokenObject.getOrDefault("expires_in", "0")))
             .refreshToken(accessTokenObject.get("refresh_token"))
+            .build();
+    }
+
+    @Override
+    public String authorize(String state) {
+        return UrlBuilder.fromBaseUrl(super.authorize(state))
+            .queryParam("scope", this.getScopes(",", false, AuthScopeUtils.getDefaultScopes(AuthQqScope.values())))
             .build();
     }
 }
