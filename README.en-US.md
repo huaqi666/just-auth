@@ -6,7 +6,7 @@
 </p>
 <p align="center">
 	<a target="_blank" href="https://search.maven.org/search?q=JustAuth">
-		<img src="https://img.shields.io/badge/Maven%20Central-1.15.8-blue" ></img>
+		<img src="https://img.shields.io/badge/Maven%20Central-1.15.9-blue" ></img>
 	</a>
 	<a target="_blank" href="https://gitee.com/yadong.zhang/JustAuth/blob/master/LICENSE">
 		<img src="https://img.shields.io/apm/l/vim-mode.svg?color=yellow" ></img>
@@ -15,16 +15,16 @@
 		<img src="https://img.shields.io/badge/JDK-1.8+-green.svg" ></img>
 	</a>
 	<a target="_blank" href="https://apidoc.gitee.com/yadong.zhang/JustAuth/" title="API文档">
-		<img src="https://img.shields.io/badge/Api%20Docs-1.15.8-orange" ></img>
+		<img src="https://img.shields.io/badge/Api%20Docs-1.15.9-orange" ></img>
 	</a>
 	<a target="_blank" href="https://justauth.wiki" title="参考文档">
 		<img src="https://img.shields.io/badge/Docs-latest-blueviolet.svg" ></img>
 	</a>
-	<a href="https://codecov.io/gh/zhangyd-c/JustAuth">
-		<img src="https://codecov.io/gh/zhangyd-c/JustAuth/branch/master/graph/badge.svg" />
+	<a href="https://codecov.io/gh/justauth/JustAuth">
+		<img src="https://codecov.io/gh/justauth/JustAuth/branch/master/graph/badge.svg?token=zYiAqd9aFz" />
 	</a>
 	<a href='https://gitee.com/yadong.zhang/JustAuth/stargazers'>
-	  <img src='https://gitee.com/yadong.zhang/JustAuth/badge/star.svg?theme=white' alt='star'></img>
+	  <img src='https://gitee.com/yadong.zhang/JustAuth/badge/star.svg?theme=gvp' alt='star'></img>
 	</a>
 	<a target="_blank" href='https://github.com/zhangyd-c/JustAuth'>
 		<img src="https://img.shields.io/github/stars/zhangyd-c/JustAuth.svg?style=social" alt="github star"></img>
@@ -71,7 +71,7 @@
             <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/twitter.png" width="20"></td>
         </tr>
     </table>
-    <center><a href="https://justauth.wiki/#/?id=%E5%B7%B2%E9%9B%86%E6%88%90%E7%9A%84%E5%B9%B3%E5%8F%B0" target="_blank">查看更多</a></center>
+    <center><a href="https://justauth.wiki" target="_blank">查看更多</a></center>
 </center>
 
 -------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ These artifacts are available from Maven Central:
 <dependency>
     <groupId>me.zhyd.oauth</groupId>
     <artifactId>JustAuth</artifactId>
-    <version>1.15.8-beta.2</version>
+    <version>1.15.9</version>
 </dependency>
 ```
 - Using JustAuth
@@ -162,11 +162,11 @@ I look forward to your joining us.
 
 ## Contributors
 
-[contributors](https://justauth.wiki/#/contributors)
+[contributors](https://justauth.wiki/contributors.html)
 
 ## Change Logs
 
-[CHANGELOGS](https://justauth.wiki/#/update)
+[CHANGELOGS](https://justauth.wiki/update.html)
 
 ## Recommend
 

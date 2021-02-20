@@ -1,41 +1,38 @@
 package me.zhyd.oauth.request;
 
 import com.alibaba.fastjson.JSONObject;
-import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.config.AuthDefaultSource;
+import me.zhyd.oauth.config.AuthSource;
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
+import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.utils.UrlBuilder;
 
 /**
  * <p>
- * 企业微信登录
+ * 企业微信登录父类
  * </p>
  *
- * @author yangkai.shen (https://xkcoding.com)
- * @since 1.10.0
+ * @author liguanhua (347826496(a)qq.com)
+ * @since 1.15.9
  */
-public class AuthWeChatEnterpriseRequest extends AuthDefaultRequest {
-    public AuthWeChatEnterpriseRequest(AuthConfig config) {
-        super(config, AuthDefaultSource.WECHAT_ENTERPRISE);
+public abstract class AbstractAuthWeChatEnterpriseRequest extends AuthDefaultRequest {
+
+    public AbstractAuthWeChatEnterpriseRequest(AuthConfig config, AuthSource source) {
+        super(config,source);
     }
 
-    public AuthWeChatEnterpriseRequest(AuthConfig config, AuthStateCache authStateCache) {
-        super(config, AuthDefaultSource.WECHAT_ENTERPRISE, authStateCache);
+
+    public AbstractAuthWeChatEnterpriseRequest(AuthConfig config, AuthSource source, AuthStateCache authStateCache) {
+        super(config, source, authStateCache);
     }
 
-    /**
-     * 微信的特殊性，此时返回的信息同时包含 openid 和 access_token
-     *
-     * @param authCallback 回调返回的参数
-     * @return 所有信息
-     */
     @Override
     protected AuthToken getAccessToken(AuthCallback authCallback) {
         String response = doGetAuthorizationCode(accessTokenUrl(authCallback.getCode()));
@@ -92,22 +89,6 @@ public class AuthWeChatEnterpriseRequest extends AuthDefaultRequest {
         return object;
     }
 
-    /**
-     * 返回带{@code state}参数的授权url，授权回调时会带上这个{@code state}
-     *
-     * @param state state 验证授权流程的参数，可以防止csrf
-     * @return 返回授权地址
-     * @since 1.9.3
-     */
-    @Override
-    public String authorize(String state) {
-        return UrlBuilder.fromBaseUrl(source.authorize())
-            .queryParam("appid", config.getClientId())
-            .queryParam("agentid", config.getAgentId())
-            .queryParam("redirect_uri", config.getRedirectUri())
-            .queryParam("state", getRealState(state))
-            .build();
-    }
 
     /**
      * 返回获取accessToken的url

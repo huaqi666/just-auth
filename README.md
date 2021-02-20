@@ -6,7 +6,7 @@
 </p>
 <p align="center">
 	<a target="_blank" href="https://search.maven.org/search?q=JustAuth">
-		<img src="https://img.shields.io/badge/Maven%20Central-1.15.8-blue" ></img>
+		<img src="https://img.shields.io/badge/Maven%20Central-1.15.9-blue" ></img>
 	</a>
 	<a target="_blank" href="https://gitee.com/yadong.zhang/JustAuth/blob/master/LICENSE">
 		<img src="https://img.shields.io/apm/l/vim-mode.svg?color=yellow" ></img>
@@ -15,16 +15,16 @@
 		<img src="https://img.shields.io/badge/JDK-1.8+-green.svg" ></img>
 	</a>
 	<a target="_blank" href="https://apidoc.gitee.com/yadong.zhang/JustAuth/" title="API文档">
-		<img src="https://img.shields.io/badge/Api%20Docs-1.15.8-orange" ></img>
+		<img src="https://img.shields.io/badge/Api%20Docs-1.15.9-orange" ></img>
 	</a>
 	<a target="_blank" href="https://justauth.wiki" title="参考文档">
 		<img src="https://img.shields.io/badge/Docs-latest-blueviolet.svg" ></img>
 	</a>
-	<a href="https://codecov.io/gh/zhangyd-c/JustAuth">
-		<img src="https://codecov.io/gh/zhangyd-c/JustAuth/branch/master/graph/badge.svg" />
+	<a href="https://codecov.io/gh/justauth/JustAuth">
+		<img src="https://codecov.io/gh/justauth/JustAuth/branch/master/graph/badge.svg?token=zYiAqd9aFz" />
 	</a>
 	<a href='https://gitee.com/yadong.zhang/JustAuth/stargazers'>
-	  <img src='https://gitee.com/yadong.zhang/JustAuth/badge/star.svg?theme=white' alt='star'></img>
+	  <img src='https://gitee.com/yadong.zhang/JustAuth/badge/star.svg?theme=gvp' alt='star'></img>
 	</a>
 	<a target="_blank" href='https://github.com/zhangyd-c/JustAuth'>
 		<img src="https://img.shields.io/github/stars/zhangyd-c/JustAuth.svg?style=social" alt="github star"></img>
@@ -71,7 +71,7 @@
             <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/twitter.png" width="20"></td>
         </tr>
     </table>
-    <center><a href="https://justauth.wiki/#/?id=%E5%B7%B2%E9%9B%86%E6%88%90%E7%9A%84%E5%B9%B3%E5%8F%B0" target="_blank">查看更多</a></center>
+    <center><a href="https://justauth.wiki" target="_blank">查看更多</a></center>
 </center>
 
 -------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ QQ 群：230017570
 
 JustAuth，如你所见，它仅仅是一个**第三方授权登录**的**工具类库**，它可以让我们脱离繁琐的第三方登录 SDK，让登录变得**So easy!**
 
-JustAuth 集成了诸如：Github、Gitee、支付宝、新浪微博、微信、Google、Facebook、Twitter、StackOverflow等国内外数十家第三方平台。更多请参考<a href="https://justauth.wiki/#/?id=%E5%B7%B2%E9%9B%86%E6%88%90%E7%9A%84%E5%B9%B3%E5%8F%B0" target="_blank">已集成的平台</a>
+JustAuth 集成了诸如：Github、Gitee、支付宝、新浪微博、微信、Google、Facebook、Twitter、StackOverflow等国内外数十家第三方平台。更多请参考<a href="https://justauth.wiki" target="_blank">已集成的平台</a>
 
 ## 有哪些特点？
 
@@ -93,11 +93,11 @@ JustAuth 集成了诸如：Github、Gitee、支付宝、新浪微博、微信、
 
 ## 有哪些功能？
 
-- 集成国内外数十家第三方平台，实现快速接入。<a href="https://justauth.wiki/#/?id=%E5%B7%B2%E9%9B%86%E6%88%90%E7%9A%84%E5%B9%B3%E5%8F%B0" target="_blank">参考文档</a>
-- 自定义 State 缓存，支持各种分布式缓存组件。<a href="https://justauth.wiki/#/customize-the-state-cache" target="_blank">参考文档</a>
-- 自定义 OAuth 平台，更容易适配自有的 OAuth 服务。<a href="https://justauth.wiki/#/customize-the-oauth" target="_blank">参考文档</a>
-- 自定义 Http 实现，选择权完全交给开发者，不会单独依赖某一具体实现。<a href="https://justauth.wiki/#/customize-the-oauth" target="_blank">参考文档</a>
-- 自定义 Scope，支持更完善的授权体系。<a href="https://justauth.wiki" target="_blank">参考文档</a>
+- 集成国内外数十家第三方平台，实现快速接入。<a href="https://justauth.wiki/quickstart/how-to-use.html" target="_blank">参考文档</a>
+- 自定义 State 缓存，支持各种分布式缓存组件。<a href="https://justauth.wiki/features/customize-the-state-cache.html" target="_blank">参考文档</a>
+- 自定义 OAuth 平台，更容易适配自有的 OAuth 服务。<a href="https://justauth.wiki/features/customize-the-oauth.html" target="_blank">参考文档</a>
+- 自定义 Http 实现，选择权完全交给开发者，不会单独依赖某一具体实现。<a href="https://justauth.wiki/quickstart/how-to-use.html#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F" target="_blank">参考文档</a>
+- 自定义 Scope，支持更完善的授权体系。<a href="https://justauth.wiki/features/customize-scopes.html" target="_blank">参考文档</a>
 - 更多...<a href="https://justauth.wiki" target="_blank">参考文档</a>
 
 ## 快速开始
@@ -107,7 +107,7 @@ JustAuth 集成了诸如：Github、Gitee、支付宝、新浪微博、微信、
 <dependency>
     <groupId>me.zhyd.oauth</groupId>
     <artifactId>JustAuth</artifactId>
-    <version>1.15.8</version>
+    <version>1.15.9</version>
 </dependency>
 ```
 - 调用api
@@ -185,6 +185,17 @@ authRequest.login(callback);
 <a href="https://www.producthunt.com/posts/justauth?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-justauth" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=196886&theme=dark" alt="JustAuth - Login, so easy! | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
 
 ## 其他
-- [CONTRIBUTORS](https://justauth.wiki/#/contributors)
-- [CHANGELOGS](https://justauth.wiki/#/update)
+- [CONTRIBUTORS](https://justauth.wiki/contributors.html)
+- [CHANGELOGS](https://justauth.wiki/update.html)
 - [PLAN](https://gitee.com/yadong.zhang/JustAuth/issues/IUGRK)
+
+## Stars 趋势
+
+### Gitee
+
+[![Stargazers over time](https://whnb.wang/img/yadong.zhang/JustAuth?e=604800)](https://whnb.wang/yadong.zhang/JustAuth?e=604800)
+
+### Github
+
+[![Stargazers over time](https://starchart.cc/justauth/JustAuth.svg)](https://starchart.cc/justauth/JustAuth)
+

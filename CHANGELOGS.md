@@ -1,3 +1,33 @@
+## 1.15.9
+
+### 2021/1/1
+
+- 发布 v1.15.9
+- 新增
+    - 修复并正式启用 飞书 平台的第三方登录
+    - AuthToken 类中新增 `refreshTokenExpireIn` 记录 refresh token 的有效期
+- PR
+    - 合并 [Github #101](https://gitee.com/yadong.zhang/JustAuth/pulls/101)：支持喜马拉雅登录
+    - 合并 [Github #105](https://gitee.com/yadong.zhang/JustAuth/pulls/105)：支持企业微信网页授权登录
+    - 合并 [Github #107](https://gitee.com/yadong.zhang/JustAuth/pulls/107)：添加AuthAlipayRequest网络代理构造器，解决 Github Issue [#102](https://github.com/justauth/JustAuth/issues/102)
+- 修改
+    - 修改喜马拉雅配置参数，将`ClientOsType`参数提到 AuthConfig 中
+    - AuthChecker 中增加对喜马拉雅平台的校验
+    - 升级 facebook api 版本到 v9.0，解决 Gitee Issue [#I2AR5S](https://gitee.com/yadong.zhang/JustAuth/issues/I2AR5S)
+    - ！！！**注意**！！！修改原来的企业微信 Request 类名为 `AuthWeChatEnterpriseQrcodeRequest`，升级后注意该点
+
+注意：可能有些开发者对于 JA 集成的四个微信平台不太理解，这儿统一说明：
+- 按照类名
+    - AuthWeChatEnterpriseQrcodeRequest：企业微信二维码登录
+    - AuthWeChatEnterpriseWebRequest：企业微信网页登录
+    - AuthWeChatOpenRequest：微信开放平台
+    - AuthWeChatMpRequest：微信公众平台
+- 按照枚举
+    - WECHAT_ENTERPRISE：企业微信二维码登录
+    - WECHAT_ENTERPRISE_WEB：企业微信网页登录
+    - WECHAT_OPEN：微信开放平台
+    - WECHAT_MP：微信公众平台
+    
 ## 1.15.8
 
 ### 2020/10/25
