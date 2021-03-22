@@ -315,17 +315,17 @@ public enum AuthDefaultSource implements AuthSource {
     FACEBOOK {
         @Override
         public String authorize() {
-            return "https://www.facebook.com/v9.0/dialog/oauth";
+            return "https://www.facebook.com/v10.0/dialog/oauth";
         }
 
         @Override
         public String accessToken() {
-            return "https://graph.facebook.com/v9.0/oauth/access_token";
+            return "https://graph.facebook.com/v10.0/oauth/access_token";
         }
 
         @Override
         public String userInfo() {
-            return "https://graph.facebook.com/v9.0/me";
+            return "https://graph.facebook.com/v10.0/me";
         }
     },
     /**
@@ -831,6 +831,33 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String refresh() {
             return "https://oauth.aliyun.com/v1/token";
+        }
+    },
+
+    /**
+     * Amazon
+     *
+     * @since 1.16.0
+     */
+    AMAZON {
+        @Override
+        public String authorize() {
+            return "https://www.amazon.com/ap/oa";
+        }
+
+        @Override
+        public String accessToken() {
+            return "https://api.amazon.com/auth/o2/token";
+        }
+
+        @Override
+        public String userInfo() {
+            return "https://api.amazon.com/user/profile";
+        }
+
+        @Override
+        public String refresh() {
+            return "https://api.amazon.com/auth/o2/token";
         }
     }
 }
