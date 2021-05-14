@@ -6,7 +6,7 @@
 </p>
 <p align="center">
 	<a target="_blank" href="https://search.maven.org/search?q=JustAuth">
-		<img src="https://img.shields.io/badge/Maven%20Central-1.16.0-blue" ></img>
+		<img src="https://img.shields.io/badge/Maven%20Central-1.16.1-blue" ></img>
 	</a>
 	<a target="_blank" href="https://gitee.com/yadong.zhang/JustAuth/blob/master/LICENSE">
 		<img src="https://img.shields.io/apm/l/vim-mode.svg?color=yellow" ></img>
@@ -15,7 +15,7 @@
 		<img src="https://img.shields.io/badge/JDK-1.8+-green.svg" ></img>
 	</a>
 	<a target="_blank" href="https://apidoc.gitee.com/yadong.zhang/JustAuth/" title="API文档">
-		<img src="https://img.shields.io/badge/Api%20Docs-1.16.0-orange" ></img>
+		<img src="https://img.shields.io/badge/Api%20Docs-1.16.1-orange" ></img>
 	</a>
 	<a target="_blank" href="https://justauth.wiki" title="参考文档">
 		<img src="https://img.shields.io/badge/Docs-latest-blueviolet.svg" ></img>
@@ -31,48 +31,10 @@
 	</a>
 </p>
 
-<center>
-    <table>
-        <tr>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/gitee.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/github.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/weibo.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/dingtalk.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/baidu.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/coding.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/tencentCloud.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/oschina.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/alipay.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/qq.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/wechat.png" width="20" title="微信开放平台"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/taobao.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/google.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/facebook.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/douyin.png" width="20"></td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/linkedin.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/microsoft.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/mi.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/toutiao.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/teambition.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/renren.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/pinterest.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/stackoverflow.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/huawei.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/wechat.png" width="20" title="微信企业版"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/csdn.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/kujiale.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/gitlab.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/meituan.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/eleme.png" width="20"></td>
-            <td align="center" width="200"><img src="https://gitee.com/yadong.zhang/static/raw/master/JustAuth/twitter.png" width="20"></td>
-        </tr>
-    </table>
-    <center><a href="https://justauth.wiki" target="_blank">查看更多</a></center>
-</center>
+-------------------------------------------------------------------------------
+<p align="center">
+<img src='./docs/media/75a3c076.png' alt='star'></img>
+</p>
 
 -------------------------------------------------------------------------------
 
@@ -107,7 +69,7 @@ JustAuth 集成了诸如：Github、Gitee、支付宝、新浪微博、微信、
 <dependency>
     <groupId>me.zhyd.oauth</groupId>
     <artifactId>JustAuth</artifactId>
-    <version>1.16.0</version>
+    <version>1.16.1</version>
 </dependency>
 ```
 - 调用api
@@ -161,33 +123,41 @@ authRequest.login(callback);
 
 感谢以下赞助商的支持：
 
-<a href="https://www.duohui.cn?utm_source=justauth" target="_blank"><img src="https://docs.duohui.cn/brand_source/img/std.svg" alt="多会 - 专业活动管理系统" style="height: 54px;" height="54px" /></a>
+[我要赞助](https://justauth.wiki/sponsor.html)
 
 ## JustAuth 的用户
 有很多公司、组织和个人把 JustAuth 用于学习、研究、生产环境和商业产品中，包括（但不限于）：
 ![](docs/users/4ca0177c.png)
 
 
-怎么没有我？[加入]()
+怎么没有我？[登记](https://gitee.com/yadong.zhang/JustAuth/issues/IZ2T7)
 
 ## 开源推荐
+
+- `JAP` 开源的登录认证中间件: [https://gitee.com/fujieid/jap](https://gitee.com/fujieid/jap)
 - `spring-boot-demo` 深度学习并实战 spring boot 的项目: [https://github.com/xkcoding/spring-boot-demo](https://github.com/xkcoding/spring-boot-demo)
 - `mica` SpringBoot 微服务高效开发工具集: [https://github.com/lets-mica/mica](https://github.com/lets-mica/mica)
-- `pig` 微服务认证授权脚手架(架构师必备): [https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
-- `SpringBlade` 完整的线上解决方案（企业开发必备）: [https://gitee.com/smallc/SpringBlade](https://gitee.com/smallc/SpringBlade)
-- `MaxKey` 马克思的钥匙，寓意是最大钥匙,是用户单点登录认证系统（Sigle Sign On System）,OAuth 2.0/OpenID Connect、SAML 2.0、JWT、CAS等标准化的开放协议，使用JustAuth集成OAuth第三方认证。: [https://shimingxy.github.io/MaxKey/](https://shimingxy.github.io/MaxKey/)
-- `YurunOAuthLogin` PHP 第三方登录授权 SDK：[YurunOAuthLogin](https://gitee.com/yurunsoft/YurunOAuthLogin)
+- `sureness` 面向restful api的高性能认证鉴权框架：[sureness](https://github.com/usthe/sureness)
+  
+更多推荐，请参考：[JustAuth - 开源推荐](https://justauth.wiki)
 
 ## 鸣谢
-- 感谢 JetBrains 提供的免费开源 License：
-<img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
 
-<a href="https://www.producthunt.com/posts/justauth?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-justauth" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=196886&theme=dark" alt="JustAuth - Login, so easy! | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
+- 感谢 JetBrains 提供的免费开源 License：
+
+<p>
+<img src="https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png" alt="图片引用自lets-mica" style="float:left;">
+</p>
 
 ## 其他
+
 - [CONTRIBUTORS](https://justauth.wiki/contributors.html)
 - [CHANGELOGS](https://justauth.wiki/update.html)
 - [PLAN](https://gitee.com/yadong.zhang/JustAuth/issues/IUGRK)
+
+## 贡献者列表
+
+[![contributors](https://whnb.wang/contributors/yadong.zhang/JustAuth)](https://whnb.wang)
 
 ## Stars 趋势
 
@@ -199,3 +169,6 @@ authRequest.login(callback);
 
 [![Stargazers over time](https://starchart.cc/justauth/JustAuth.svg)](https://starchart.cc/justauth/JustAuth)
 
+### ProductHunt
+
+<a href="https://www.producthunt.com/posts/justauth?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-justauth" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=196886&theme=dark" alt="JustAuth - Login, so easy! | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>

@@ -14,7 +14,7 @@ import me.zhyd.oauth.utils.AuthScopeUtils;
 import me.zhyd.oauth.utils.UrlBuilder;
 
 /**
- * Cooding登录
+ * Coding登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @since 1.0.0
@@ -85,7 +85,7 @@ public class AuthCodingRequest extends AuthDefaultRequest {
      */
     @Override
     public String authorize(String state) {
-        return UrlBuilder.fromBaseUrl(String.format(source.authorize(), config.getCodingGroupName()))
+        return UrlBuilder.fromBaseUrl(String.format(source.authorize(), config.getDomainPrefix()))
             .queryParam("response_type", "code")
             .queryParam("client_id", config.getClientId())
             .queryParam("redirect_uri", config.getRedirectUri())
@@ -102,7 +102,7 @@ public class AuthCodingRequest extends AuthDefaultRequest {
      */
     @Override
     public String accessTokenUrl(String code) {
-        return UrlBuilder.fromBaseUrl(String.format(source.accessToken(), config.getCodingGroupName()))
+        return UrlBuilder.fromBaseUrl(String.format(source.accessToken(), config.getDomainPrefix()))
             .queryParam("code", code)
             .queryParam("client_id", config.getClientId())
             .queryParam("client_secret", config.getClientSecret())
@@ -119,7 +119,7 @@ public class AuthCodingRequest extends AuthDefaultRequest {
      */
     @Override
     public String userInfoUrl(AuthToken authToken) {
-        return UrlBuilder.fromBaseUrl(String.format(source.userInfo(), config.getCodingGroupName()))
+        return UrlBuilder.fromBaseUrl(String.format(source.userInfo(), config.getDomainPrefix()))
             .queryParam("access_token", authToken.getAccessToken())
             .build();
     }

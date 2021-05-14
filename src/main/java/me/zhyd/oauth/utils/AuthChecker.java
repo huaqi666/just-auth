@@ -25,7 +25,8 @@ public class AuthChecker {
      * @since 1.6.1-beta
      */
     public static boolean isSupportedAuth(AuthConfig config, AuthSource source) {
-        boolean isSupported = StringUtils.isNotEmpty(config.getClientId()) && StringUtils.isNotEmpty(config.getClientSecret()) && StringUtils.isNotEmpty(config.getRedirectUri());
+        boolean isSupported = StringUtils.isNotEmpty(config.getClientId())
+            && StringUtils.isNotEmpty(config.getClientSecret());
         if (isSupported && AuthDefaultSource.ALIPAY == source) {
             isSupported = StringUtils.isNotEmpty(config.getAlipayPublicKey());
         }
@@ -35,8 +36,8 @@ public class AuthChecker {
         if (isSupported && AuthDefaultSource.WECHAT_ENTERPRISE == source) {
             isSupported = StringUtils.isNotEmpty(config.getAgentId());
         }
-        if (isSupported && AuthDefaultSource.CODING == source) {
-            isSupported = StringUtils.isNotEmpty(config.getCodingGroupName());
+        if (isSupported && (AuthDefaultSource.CODING == source || AuthDefaultSource.OKTA == source)) {
+            isSupported = StringUtils.isNotEmpty(config.getDomainPrefix());
         }
         if (isSupported && AuthDefaultSource.XMLY == source) {
             isSupported = StringUtils.isNotEmpty(config.getDeviceId()) && null != config.getClientOsType();
@@ -56,6 +57,12 @@ public class AuthChecker {
      */
     public static void checkConfig(AuthConfig config, AuthSource source) {
         String redirectUri = config.getRedirectUri();
+        if (config.isIgnoreCheckRedirectUri()) {
+            return;
+        }
+        if (StringUtils.isEmpty(redirectUri)) {
+            throw new AuthException(AuthResponseStatus.ILLEGAL_REDIRECT_URI, source);
+        }
         if (!GlobalAuthUtils.isHttpProtocol(redirectUri) && !GlobalAuthUtils.isHttpsProtocol(redirectUri)) {
             throw new AuthException(AuthResponseStatus.ILLEGAL_REDIRECT_URI, source);
         }

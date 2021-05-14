@@ -1,11 +1,37 @@
+## 1.16.1
+
+### 2021/4/19
+
+- 发布 v1.16.1
+- Fix Github issue [#114](https://github.com/justauth/JustAuth/issues/114): 解决企业微信授权后,回调地址中原有的参数丢失的问题
+- Fix Github issue [#82](https://github.com/justauth/JustAuth/issues/82): 抖音平台支持自定义 scope
+- Fix Github issue [#92](https://github.com/justauth/JustAuth/issues/92): 增加忽略校验 redirectUri 的配置
+- Merge Github PR [#115](https://github.com/justauth/JustAuth/pull/115)
+- 升级 `fastjson` 到 `v1.2.76`
+  
+## 1.16.0
+
+### 2021/4/7
+
+- 发布 v1.16.0
+- 新增
+  - 集成 Amazon 平台登录
+  - 集成 Slack 平台登录
+  - 集成 LINE 平台登录
+  - 集成 Okta 平台登录
+  - 集成钉钉账号登录
+- 修改 
+  - 【**重要**】 `AuthConfig`中的`codingGroupName`参数更名为`domainPrefix`，针对此类平台提供通用的配置。
+  - 修改 `AuthFacebookScope` 中的默认 scope，解决 justauth-demo 项目中使用 facebook 报错的问题
+  - 升级 facebook 的 api 到 v10.0 版本
+  - 优化部分代码
+  - 优化 Map 声明时的初始容量，避免频繁扩容
+  - 更新 README 文档
+- PR
+  - 合并 [Github #110](https://github.com/justauth/JustAuth/pull/110) 
+  - 合并 [Gitee #22](https://gitee.com/yadong.zhang/JustAuth/pulls/22) 
+
 ## 1.15.9
-
-### 2021/3/13
-
-- 集成 Amazon 平台（[www.amazon.com](https://www.amazon.com)）的登录
-- 修改 `AuthFacebookScope` 中的默认 scope，解决 justauth-demo 项目中使用 facebook 报错的问题
-- 升级 facebook 的 api 到 v10.0 版本
-- 优化部分代码
 
 ### 2021/1/1
 
@@ -14,9 +40,9 @@
     - 修复并正式启用 飞书 平台的第三方登录
     - AuthToken 类中新增 `refreshTokenExpireIn` 记录 refresh token 的有效期
 - PR
-    - 合并 [Github #101](https://gitee.com/yadong.zhang/JustAuth/pulls/101)：支持喜马拉雅登录
-    - 合并 [Github #105](https://gitee.com/yadong.zhang/JustAuth/pulls/105)：支持企业微信网页授权登录
-    - 合并 [Github #107](https://gitee.com/yadong.zhang/JustAuth/pulls/107)：添加AuthAlipayRequest网络代理构造器，解决 Github Issue [#102](https://github.com/justauth/JustAuth/issues/102)
+    - 合并 [Github #101](https://github.com/justauth/JustAuth/pull/101) ：支持喜马拉雅登录
+    - 合并 [Github #105](https://github.com/justauth/JustAuth/pull/105) ：支持企业微信网页授权登录
+    - 合并 [Github #107](https://github.com/justauth/JustAuth/pull/107) ：添加AuthAlipayRequest网络代理构造器，解决 Github Issue [#102](https://github.com/justauth/JustAuth/issues/102)
 - 修改
     - 修改喜马拉雅配置参数，将`ClientOsType`参数提到 AuthConfig 中
     - AuthChecker 中增加对喜马拉雅平台的校验

@@ -4,20 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 京东平台 OAuth 授权范围
+ * Line 平台 OAuth 授权范围
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
- * @version 1.0.0
- * @since 1.0.0
+ * @since 1.16.0
  */
 @Getter
 @AllArgsConstructor
-public enum AuthJdScope implements AuthScope {
+public enum AuthLineScope implements AuthScope {
 
     /**
      * {@code scope} 含义，以{@code description} 为准
      */
-    SNSAPI_BASE("snsapi_base", "基础授权", true);
+
+    PROFILE("profile", "Get profile details", true),
+    OPENID("openid", "Get id token", true),
+    EMAIL("email", "Get email (separate authorization required)", false);
 
     private final String scope;
     private final String description;
