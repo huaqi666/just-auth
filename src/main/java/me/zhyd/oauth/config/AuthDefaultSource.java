@@ -2,6 +2,7 @@ package me.zhyd.oauth.config;
 
 import me.zhyd.oauth.enums.AuthResponseStatus;
 import me.zhyd.oauth.exception.AuthException;
+import me.zhyd.oauth.request.*;
 
 /**
  * JustAuth内置的各api需要的url， 用枚举类分平台类型管理
@@ -28,6 +29,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://api.github.com/user";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthGithubRequest.class;
+        }
     },
     /**
      * 新浪微博
@@ -52,6 +58,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String revoke() {
             return "https://api.weibo.com/oauth2/revokeoauth2";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthWeiboRequest.class;
+        }
     },
     /**
      * gitee
@@ -70,6 +81,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://gitee.com/api/v5/user";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthGiteeRequest.class;
         }
     },
     /**
@@ -90,6 +106,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://oapi.dingtalk.com/sns/getuserinfo_bycode";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthDingTalkRequest.class;
+        }
     },
     /**
      * 钉钉账号登录
@@ -108,6 +129,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return DINGTALK.userInfo();
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthDingTalkAccountRequest.class;
         }
     },
     /**
@@ -138,6 +164,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://openapi.baidu.com/oauth/2.0/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthBaiduRequest.class;
+        }
     },
     /**
      * csdn
@@ -156,6 +187,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://api.csdn.net/user/getinfo";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthCsdnRequest.class;
         }
     },
     /**
@@ -179,6 +215,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://%s.coding.net/api/account/current_user";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthCodingRequest.class;
+        }
     },
     /**
      * oschina 开源中国
@@ -198,6 +239,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://www.oschina.net/action/openapi/user";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthOschinaRequest.class;
+        }
     },
     /**
      * 支付宝
@@ -216,6 +262,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://openapi.alipay.com/gateway.do";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthAlipayRequest.class;
         }
     },
     /**
@@ -241,6 +292,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://graph.qq.com/oauth2.0/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthQqRequest.class;
+        }
     },
     /**
      * 微信开放平台
@@ -264,6 +320,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String refresh() {
             return "https://api.weixin.qq.com/sns/oauth2/refresh_token";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthWeChatOpenRequest.class;
         }
     },
     /**
@@ -289,6 +350,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://api.weixin.qq.com/sns/oauth2/refresh_token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthWeChatMpRequest.class;
+        }
     },
     /**
      * 淘宝
@@ -307,6 +373,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             throw new AuthException(AuthResponseStatus.UNSUPPORTED);
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthTaobaoRequest.class;
         }
     },
     /**
@@ -327,6 +398,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://www.googleapis.com/oauth2/v3/userinfo";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthGoogleRequest.class;
+        }
     },
     /**
      * Facebook
@@ -345,6 +421,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://graph.facebook.com/v10.0/me";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthFacebookRequest.class;
         }
     },
     /**
@@ -370,6 +451,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://open.douyin.com/oauth/refresh_token/";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthDouyinRequest.class;
+        }
     },
     /**
      * 领英
@@ -393,6 +479,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String refresh() {
             return "https://www.linkedin.com/oauth/v2/accessToken";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthLinkedinRequest.class;
         }
     },
     /**
@@ -418,6 +509,38 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://login.microsoftonline.com/common/oauth2/v2.0/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthMicrosoftRequest.class;
+        }
+    },
+    /**
+     * 微软中国(世纪互联)
+     */
+    MICROSOFT_CN {
+        @Override
+        public String authorize() {
+            return "https://login.partner.microsoftonline.cn/common/oauth2/v2.0/authorize";
+        }
+
+        @Override
+        public String accessToken() {
+            return "https://login.partner.microsoftonline.cn/common/oauth2/v2.0/token";
+        }
+
+        @Override
+        public String userInfo() {
+            return "https://microsoftgraph.chinacloudapi.cn/v1.0/me";
+        }
+
+        @Override
+        public String refresh() {
+            return "https://login.partner.microsoftonline.cn/common/oauth2/v2.0/token";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() { return AuthMicrosoftCnRequest.class; }
     },
     /**
      * 小米
@@ -442,6 +565,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://account.xiaomi.com/oauth2/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthMiRequest.class;
+        }
     },
     /**
      * 今日头条
@@ -460,6 +588,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://open.snssdk.com/data/user_profile";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthToutiaoRequest.class;
         }
     },
     /**
@@ -484,6 +617,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://api.teambition.com/users/me";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthTeambitionRequest.class;
         }
     },
 
@@ -510,6 +648,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://api.renren.com/v2/user/get";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthRenrenRequest.class;
+        }
     },
 
     /**
@@ -530,6 +673,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://api.pinterest.com/v1/me";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthPinterestRequest.class;
+        }
     },
 
     /**
@@ -549,6 +697,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://api.stackexchange.com/2.2/me";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthStackOverflowRequest.class;
         }
     },
 
@@ -577,6 +730,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://oauth-login.cloud.huawei.com/oauth2/v2/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthHuaweiRequest.class;
+        }
     },
 
     /**
@@ -599,8 +757,51 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
         }
-    },
 
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthWeChatEnterpriseQrcodeRequest.class;
+        }
+    },
+    /**
+     * 企业微信二维码第三方登录
+     */
+    WECHAT_ENTERPRISE_QRCODE_THIRD {
+        /**
+         * 授权的api
+         *
+         * @return url
+         */
+        @Override
+        public String authorize() {
+            return "https://open.work.weixin.qq.com/wwopen/sso/3rd_qrConnect";
+        }
+
+        /**
+         * 获取accessToken的api
+         *
+         * @return url
+         */
+        @Override
+        public String accessToken() {
+            return "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token";
+        }
+
+        /**
+         * 获取用户信息的api
+         *
+         * @return url
+         */
+        @Override
+        public String userInfo() {
+            return "https://qyapi.weixin.qq.com/cgi-bin/service/get_login_info";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthWeChatEnterpriseThirdQrcodeRequest.class;
+        }
+    },
     /**
      * 企业微信网页登录
      */
@@ -618,6 +819,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthWeChatEnterpriseWebRequest.class;
         }
     },
 
@@ -646,6 +852,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://oauth.kujiale.com/oauth2/auth/token/refresh";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthKujialeRequest.class;
+        }
     },
 
     /**
@@ -667,6 +878,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://gitlab.com/api/v4/user";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthGitlabRequest.class;
         }
     },
 
@@ -694,6 +910,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String refresh() {
             return "https://openapi.waimai.meituan.com/oauth/refresh_token";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthMeituanRequest.class;
         }
     },
 
@@ -724,6 +945,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://open-api.shop.ele.me/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthElemeRequest.class;
+        }
     },
 
     /**
@@ -745,6 +971,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String userInfo() {
             return "https://api.twitter.com/1.1/account/verify_credentials.json";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthTwitterRequest.class;
         }
     },
 
@@ -775,6 +1006,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://open.feishu.cn/open-apis/authen/v1/refresh_access_token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthFeishuRequest.class;
+        }
     },
     /**
      * 京东
@@ -801,6 +1037,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://open-oauth.jd.com/oauth2/refresh_token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthJdRequest.class;
+        }
     },
 
     /**
@@ -826,6 +1067,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String refresh() {
             return "https://oauth.aliyun.com/v1/token";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthAliyunRequest.class;
+        }
     },
 
     /**
@@ -850,6 +1096,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String refresh() {
             return "https://oauth.aliyun.com/v1/token";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthXmlyRequest.class;
         }
     },
 
@@ -877,6 +1128,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String refresh() {
             return "https://api.amazon.com/auth/o2/token";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthAmazonRequest.class;
         }
     },
     /**
@@ -911,6 +1167,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String revoke() {
             return "https://slack.com/api/auth.revoke";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthSlackRequest.class;
+        }
     },
     /**
      * line
@@ -941,6 +1202,11 @@ public enum AuthDefaultSource implements AuthSource {
         @Override
         public String revoke() {
             return "https://api.line.me/oauth2/v2.1/revoke";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthLineRequest.class;
         }
     },
     /**
@@ -975,6 +1241,11 @@ public enum AuthDefaultSource implements AuthSource {
         public String revoke() {
             return "https://%s.okta.com/oauth2/%s/v1/revoke";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthOktaRequest.class;
+        }
     },
     /**
      * 程序员客栈
@@ -996,5 +1267,35 @@ public enum AuthDefaultSource implements AuthSource {
         public String userInfo() {
             return "https://www.proginn.com/openapi/user/basic_info";
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthProginnRequest.class;
+        }
     },
+    /**
+     * 爱发电 <a href="https://afdian.net/">爱发电</a>
+     */
+    AFDIAN {
+        @Override
+        public String authorize() {
+            return "https://afdian.net/oauth2/authorize";
+        }
+
+        @Override
+        public String accessToken() {
+            return "https://afdian.net/api/oauth2/access_token";
+        }
+
+        @Override
+        public String userInfo() {
+            return "";
+        }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthProginnRequest.class;
+        }
+    }
+
 }

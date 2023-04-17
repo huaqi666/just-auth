@@ -38,7 +38,10 @@ public class AuthConfig {
     /**
      * 支付宝公钥：当选择支付宝登录时，该值可用
      * 对应“RSA2(SHA256)密钥”中的“支付宝公钥”
+     *
+     * @deprecated 请使用AuthAlipayRequest的构造方法设置"alipayPublicKey"
      */
+    @Deprecated
     private String alipayPublicKey;
 
     /**
@@ -64,6 +67,13 @@ public class AuthConfig {
      * @since 1.10.0
      */
     private String agentId;
+
+    /**
+     * 企业微信第三方授权用户类型，member|admin
+     *
+     * @since 1.10.0
+     */
+    private String usertype;
 
     /**
      * 域名前缀。

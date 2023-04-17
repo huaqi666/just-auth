@@ -6,7 +6,7 @@
 
   <groupId>me.zhyd.oauth</groupId>
   <artifactId>JustAuth</artifactId>
-  <version>1.16.2</version>
+  <version>1.16.5</version>
 
   <name>JustAuth</name>
   <url>https://gitee.com/yadong.zhang/JustAuth</url>
@@ -57,11 +57,11 @@
     <maven-surefire-version>2.20</maven-surefire-version>
     <maven-gpg-version>1.6</maven-gpg-version>
     <maven.test.skip>false</maven.test.skip>
-    <simple-http.version>1.0.3</simple-http.version>
-    <lombok-version>1.18.10</lombok-version>
-    <junit-version>4.13.1</junit-version>
-    <fastjson-version>1.2.76</fastjson-version>
-    <alipay-sdk-version>4.8.10.ALL</alipay-sdk-version>
+    <simple-http.version>1.0.5</simple-http.version>
+    <lombok-version>1.18.20</lombok-version>
+    <junit-version>4.13.2</junit-version>
+    <fastjson-version>1.2.83</fastjson-version>
+    <alipay-sdk-version>4.17.5.ALL</alipay-sdk-version>
     <jacoco-version>0.8.2</jacoco-version>
   </properties>
 
@@ -158,6 +158,15 @@
   </build>
   <profiles>
     <profile>
+      <id>snapshot</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+    <profile>
       <id>release</id>
       <build>
         <plugins>
@@ -222,10 +231,6 @@
           </plugins>
       </build>
       <distributionManagement>
-        <snapshotRepository>
-          <id>sonatype-nexus-snapshots</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
         <repository>
           <id>sonatype-nexus-staging</id>
           <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>

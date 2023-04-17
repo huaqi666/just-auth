@@ -72,7 +72,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
     @Override
     public AuthResponse login(AuthCallback authCallback) {
         try {
-            AuthChecker.checkCode(source, authCallback);
+            checkCode(authCallback);
             if (!config.isIgnoreCheckState()) {
                 AuthChecker.checkState(authCallback.getState(), source, authStateCache);
             }
@@ -86,13 +86,17 @@ public abstract class AuthDefaultRequest implements AuthRequest {
         }
     }
 
+    protected void checkCode(AuthCallback authCallback) {
+        AuthChecker.checkCode(source, authCallback);
+    }
+
     /**
      * 处理{@link AuthDefaultRequest#login(AuthCallback)} 发生异常的情况，统一响应参数
      *
      * @param e 具体的异常
      * @return AuthResponse
      */
-    private AuthResponse responseError(Exception e) {
+    AuthResponse responseError(Exception e) {
         int errorCode = AuthResponseStatus.FAILURE.getCode();
         String errorMsg = e.getMessage();
         if (e instanceof AuthException) {
@@ -211,7 +215,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
      * @return Response
      */
     protected String doPostAuthorizationCode(String code) {
-        return new HttpUtils(config.getHttpConfig()).post(accessTokenUrl(code));
+        return new HttpUtils(config.getHttpConfig()).post(accessTokenUrl(code)).getBody();
     }
 
     /**
@@ -221,7 +225,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
      * @return Response
      */
     protected String doGetAuthorizationCode(String code) {
-        return new HttpUtils(config.getHttpConfig()).get(accessTokenUrl(code));
+        return new HttpUtils(config.getHttpConfig()).get(accessTokenUrl(code)).getBody();
     }
 
     /**
@@ -232,7 +236,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
      */
     @Deprecated
     protected String doPostUserInfo(AuthToken authToken) {
-        return new HttpUtils(config.getHttpConfig()).post(userInfoUrl(authToken));
+        return new HttpUtils(config.getHttpConfig()).post(userInfoUrl(authToken)).getBody();
     }
 
     /**
@@ -242,7 +246,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
      * @return Response
      */
     protected String doGetUserInfo(AuthToken authToken) {
-        return new HttpUtils(config.getHttpConfig()).get(userInfoUrl(authToken));
+        return new HttpUtils(config.getHttpConfig()).get(userInfoUrl(authToken)).getBody();
     }
 
     /**
@@ -253,7 +257,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
      */
     @Deprecated
     protected String doPostRevoke(AuthToken authToken) {
-        return new HttpUtils(config.getHttpConfig()).post(revokeUrl(authToken));
+        return new HttpUtils(config.getHttpConfig()).post(revokeUrl(authToken)).getBody();
     }
 
     /**
@@ -263,7 +267,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
      * @return Response
      */
     protected String doGetRevoke(AuthToken authToken) {
-        return new HttpUtils(config.getHttpConfig()).get(revokeUrl(authToken));
+        return new HttpUtils(config.getHttpConfig()).get(revokeUrl(authToken)).getBody();
     }
 
     /**

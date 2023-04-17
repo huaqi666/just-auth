@@ -1,3 +1,47 @@
+## 1.16.5
+
+### 2021/10/18
+
+- 合并 PR [Github #138](https://github.com/justauth/JustAuth/pull/138)
+- 升级alipay-sdk-version的依赖版本
+- 修改用户logo的尺寸
+- 修复 alipay 登录失败的 BUG [Gitee Issue #I4E4ML](https://gitee.com/yadong.zhang/JustAuth/issues/I4E4ML)
+
+
+## 1.16.4
+
+### 2021/9/22
+
+- 合并 PR 
+  - [Github #134](https://github.com/justauth/JustAuth/pull/134)
+  - [Github #133](https://github.com/justauth/JustAuth/pull/133)
+  - [Github #132](https://github.com/justauth/JustAuth/pull/132)
+  - [Github #131](https://github.com/justauth/JustAuth/pull/131)
+- 添加微软中国(世纪华联)第三方登录，新增微软方式登录的redirectUri校验。[Gitee PR #28](https://gitee.com/yadong.zhang/JustAuth/pulls/28)
+- 升级第三方的依赖
+  -  simple-http > 1.0.5 
+  -  lombok > 1.18.20
+  -  junit > 4.13.2
+  -  fastjson > 1.2.78
+  -  alipay-sdk > 4.16.38.ALL
+
+## 1.16.3
+
+### 2021/8/15
+
+- 发布 v1.16.3
+- 新增
+  - 集成“企业微信的第三方应用”平台登录
+- PR
+  - `AuthRequst` 增加 `Builder` 构建方式，使用起来更简单。 ([#27](https://gitee.com/yadong.zhang/JustAuth/pulls/27))
+  - 使用 Github Action 添加发布快照的 workflow。 ([#126](https://github.com/justauth/JustAuth/pull/126))
+  - 新增了企业微信的第三方应用登录，`AuthWeChatEnterpriseThirdQrcodeRequest`。 ([#127](https://github.com/justauth/JustAuth/pull/127))
+  - 添加快照版本对应更详细的文档。 ([#128](https://github.com/justauth/JustAuth/pull/128))
+- 修改
+  - 在 Gitee PR ([#27](https://gitee.com/yadong.zhang/JustAuth/pulls/27)) 的基础上重构代码，增加 Builder 方式创建 AuthRequest
+  - 解决 Line 登录的错误。[#122](https://github.com/justauth/JustAuth/issues/122)
+  
+
 ## 1.16.2
 
 ### 2021/7/28
@@ -117,7 +161,7 @@
     - 新增 [微信企业版登录](oauth/wechatEnterprise.md)文档
     - 新增 [Facebook 登录](oauth/facebook.md)文档
     - 完善 [JustAuth 使用者](users.md)文档
-    - 替换“帮助文档”域名，由[https://docs.justauth.whnb.wang](https://docs.justauth.whnb.wang)迁移到[https://justauth.wiki](https://justauth.wiki)
+    - 替换“帮助文档”域名，由[https://docs.justauth.whnb.wang](https://docs.justauth.whnb.wang)迁移到[https://www.justauth.cn](https://www.justauth.cn)
 - 新增
     - 增加阿里云授权登录中刷新授权token的接口，by “QQ群用户需求”
     - AuthConfig 增加忽略校验 state 的参数，详情参考：[Github#Issue#83](https://github.com/justauth/JustAuth/issues/83)
@@ -170,7 +214,7 @@ new AuthGoogleRequest(AuthConfig.builder()
 - 修复
     - 解决 Twitter 授权失败的BUG
 - 文档
-    - 完善 [https://justauth.wiki](https://justauth.wiki/) 的404引导页内容
+    - 完善 [https://www.justauth.cn](https://www.justauth.cn/) 的404引导页内容
     - 增加名词解释： `uuid`
     - 补充 [Q&A](Q&A.md)
     - 新增 [参考文档](references.md)，包含 OAuth 授权和第三方平台的API文档等内容
@@ -250,9 +294,9 @@ System.setProperty("proxyHost", "127.0.0.1");
 - 新增
     - 增加微信、QQ、支付宝、微博授权登录的帮助文档
     - 合并[PR#57](https://github.com/justauth/JustAuth/pull/57)，增加微信公众号登录 by [@xkcoding](https://github.com/xkcoding)
-    - [帮助文档](https://justauth.wiki)中增加自定义的404页面
-    - [帮助文档](https://justauth.wiki)中增加Gittalk插件
-    - [帮助文档](https://justauth.wiki)中增加Java代码高亮的插件
+    - [帮助文档](https://www.justauth.cn)中增加自定义的404页面
+    - [帮助文档](https://www.justauth.cn)中增加Gittalk插件
+    - [帮助文档](https://www.justauth.cn)中增加Java代码高亮的插件
     - 增加`AuthUserGender#getWechatRealGender`方法，兼容获取微信平台的用户性别
 - 修改
     - 修复抖音登录取值取错层级的问题（[issue#I15SIG@Gitee](https://gitee.com/yadong.zhang/JustAuth/issues/I15SIG)）
@@ -261,7 +305,7 @@ System.setProperty("proxyHost", "127.0.0.1");
     - `AuthResponseStatus`枚举类中增加`ILLEGAL_STATUS`、`REQUIRED_REFRESH_TOKEN`两个枚举值
     - `AuthSource`接口中增加`getName`方法，用来对外提供实际`source`的字符串值
     - `AuthWeiboRequest`微博授权登录中实现`revoke`方法，支持手动回收授权
-    - [帮助文档](https://justauth.wiki)中修复[腾讯云登录]链接错误的问题
+    - [帮助文档](https://www.justauth.cn)中修复[腾讯云登录]链接错误的问题
 - 升级
     - 升级相关依赖：lombok@v1.18.10，hutool@5.0.5，fastjson@1.2.62，alipay@4.8.10.ALL（[PR#11@Gitee](https://gitee.com/yadong.zhang/JustAuth/pulls/11)）
 

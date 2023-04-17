@@ -1,5 +1,8 @@
 package me.zhyd.oauth.config;
 
+import me.zhyd.oauth.request.AuthDefaultRequest;
+import me.zhyd.oauth.request.AuthExtendRequest;
+
 /**
  * 测试自定义实现{@link AuthSource}接口后的枚举类
  *
@@ -59,5 +62,11 @@ public enum AuthExtendSource implements AuthSource {
         public String refresh() {
             return null;
         }
+
+        @Override
+        public Class<? extends AuthDefaultRequest> getTargetClass() {
+            return AuthExtendRequest.class;
+        }
     }
+
 }
